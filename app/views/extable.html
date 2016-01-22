@@ -1,0 +1,56 @@
+<div class="row">
+  <p>&nbsp;</p>
+</div>
+<div ng-app="wmsd" ng-controller="ProjectJobs as vm" class="container">
+    <div class="row form-inline">
+        <div class="col-xs-6 angular-data-table">
+            <select name="pageSize" class="form-control input-sm" ng-model="vm.dataTable.pageSize">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <label for="pageSize" class="control-label">records per page</label>
+        </div>
+        <div class="col-xs-6">
+            <input type="search" name="filter" class="form-control input-sm pull-right" ng-model="vm.dataTable.filter" ng-change="vm.dataTable.resetPaging()">
+            <label for="filter" class="control-label pull-right">filter: &nbsp;</label>
+        </div>
+        <div class="col-xs-12">
+            <table class="table table-condensed table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th ng-click="vm.dataTable.sort('CompanyNumber')">Co.</th>
+                        <th ng-click="vm.dataTable.sort('LocationNumber')">Location No.</th>
+                        <th ng-click="vm.dataTable.sort('Name')">Project ID</th>
+                        <th ng-click="vm.dataTable.sort('Name')">Name</th>
+                        <th ng-click="vm.dataTable.sort('City')">City</th>
+                        <th ng-click="vm.dataTable.sort('County')">County</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="project in vm.dataTable.filteredData = (vm.dataTable.data | filter:vm.dataTable.filter) | orderBy:vm.dataTable.sortColumn:vm.dataTable.sortDescending | startFrom:vm.dataTable.currentPageStart() | limitTo:vm.dataTable.pageSize">
+                    <tr>
+                        <td>{{project.CompanyNumber}}</td>
+                        <td>{{project.LocationNumber}}</td>
+                        <td><a href="http://example.com/Edit/{{project.ID}}">{{project.ID}}</a></td>
+                        <td>{{project.Name}}</td>
+                        <td>{{project.City}}</td>
+                        <td>{{project.County}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-6">
+            <p>Showing {{vm.dataTable.currentPageStart()}} to {{vm.dataTable.currentPageEnd()}} of {{vm.projects.length}} entries</p>
+        </div>
+        <div class="col-xs-6">
+            <ul class="pagination pull-right">
+                <li class="prev" ng-class="{ disabled: vm.dataTable.onFirstPage()}"><a href="#" ng-click="vm.dataTable.previous()">← Previous</a></li>
+                <li ng-repeat-start="page in vm.dataTable.pages()" ng-repeat-end ng-class="{active: vm.dataTable.currentPage === page - 1}">
+                    <a ng-click="vm.dataTable.goToPage(page)">{{page}}</a>
+                </li>
+                <li class="next" ng-class="{ disabled: vm.dataTable.onLastPage()}"><a href="#" ng-click="vm.dataTable.next()">Next → </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
